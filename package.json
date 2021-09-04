@@ -1,0 +1,26 @@
+{
+  "name": "ereader",
+  "version": "0.0.1",
+  "description": "Esta aplicação lista seus livros",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "ts-node-dev --transpile-only --inspect --ignore-watch node_modules --respawn src/api/server.ts",
+    "test": "jest --passWithNoTests --watchAll",
+    "test:staged": "jest --passWithNoTests"
+  },
+  "author": "Higor Santana",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/jest": "^27.0.1",
+    "@types/node": "^16.7.6",
+    "jest": "^27.1.0",
+    "ts-jest": "^27.0.5",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.4.2"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "sequelize": "^6.6.5"
+  }
+}
