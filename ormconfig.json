@@ -2,9 +2,13 @@
   "type": "sqlite3",
   "database": "src/api/db.db",
   "entities": [
-     "src/entity/**/*.ts"
+     "./src/entity/**/*.ts"
   ],
+  "migrationsTableName": "migrations",
   "migrations": [
-     "src/migration/**/*.ts"
-  ]
+     "./src/migration/**/*.ts"
+  ],
+  "cli": {
+    "migrationsDir": "./src/migration"
+  }
 }
