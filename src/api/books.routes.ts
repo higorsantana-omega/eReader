@@ -1,13 +1,15 @@
 import { Request, Response, Router } from "express";
 import { Book } from "./entities/Book";
 import { IBook } from "./repositories/IBook";
+import { CreateBookService } from "./services/createBook/CreateBookService";
 import { ListAllBooksSerivce } from "./services/listAllBooks/ListAllBooksService";
 
 const router = Router();
 
-const listBooksAllBooksService = new ListAllBooksSerivce
+const listBooksAllBooksService = new ListAllBooksSerivce();
+const createBookService = new CreateBookService();
 
-router.get("/", async (res: Response): Promise<Response> => {
+router.get("/", async (req: Request, res: Response): Promise<Response> => {
   const listAllBooks = await listBooksAllBooksService.execute();
   return res.json(listAllBooks);
 });
@@ -28,13 +30,7 @@ router.post("/book", async (req: Request, res: Response): Promise<Response> => {
     file,
   }: IBook = req.body;
 
-  let findEqualsID = await Book.findByPk(id);
-
-  if (findEqualsID) {
-    return res.status(400).send("Este livro já existe");
-  }
-
-  let createBook = await Book.create({
+  const createBook = await createBookService.execute({
     id,
     book_name,
     author,
@@ -49,7 +45,7 @@ router.post("/book", async (req: Request, res: Response): Promise<Response> => {
     file,
   });
 
-  return res.json(createBook);
+  return res.sendStatus(201).json(createBook);
 });
 
 router.put("/book/:idbook", async (req: Request, res: Response) => {
@@ -94,7 +90,7 @@ router.put("/book/:idbook", async (req: Request, res: Response) => {
     file,
   });
 
-  return res.status(200).json(updateBook)
+  return res.status(200).json(updateBook);
 });
 
 router.delete("/book/:idbook", async (req: Request, res: Response) => {
@@ -102,11 +98,11 @@ router.delete("/book/:idbook", async (req: Request, res: Response) => {
   if (!idbook) {
     return res.status(400).json("Informe o id");
   }
-  const deleteBook = await Book.destroy({ where: { id: idbook } })
+  const deleteBook = await Book.destroy({ where: { id: idbook } });
   if (!deleteBook) {
-    return res.status(400).json("Não encontrado")
+    return res.status(400).json("Não encontrado");
   }
-  return res.status(200).json(deleteBook)
-})
+  return res.status(200).json(deleteBook);
+});
 
 export { router };
