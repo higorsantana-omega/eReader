@@ -1,15 +1,15 @@
 import { Request, Response, Router } from "express";
-import { listenerCount } from "stream";
-import { app } from "./app";
 import { Book } from "./entities/Book";
 import { IBook } from "./repositories/IBook";
+import { ListAllBooksSerivce } from "./services/listAllBooks/ListAllBooksService";
 
 const router = Router();
 
-router.get("/", async (req: Request, res: Response): Promise<Response> => {
-  const booksList = await Book.findAll();
+const listBooksAllBooksService = new ListAllBooksSerivce
 
-  return res.json(booksList);
+router.get("/", async (res: Response): Promise<Response> => {
+  const listAllBooks = await listBooksAllBooksService.execute();
+  return res.json(listAllBooks);
 });
 
 router.post("/book", async (req: Request, res: Response): Promise<Response> => {
