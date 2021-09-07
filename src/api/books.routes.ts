@@ -3,11 +3,13 @@ import { Book } from "./entities/Book";
 import { IBook } from "./repositories/IBook";
 import { CreateBookService } from "./services/createBook/CreateBookService";
 import { ListAllBooksSerivce } from "./services/listAllBooks/ListAllBooksService";
+import { UpdateBookService } from "./services/updateBook/UpdateBookService";
 
 const router = Router();
 
 const listBooksAllBooksService = new ListAllBooksSerivce();
 const createBookService = new CreateBookService();
+const updateBookService = new UpdateBookService();
 
 router.get("/", async (req: Request, res: Response): Promise<Response> => {
   const listAllBooks = await listBooksAllBooksService.execute();
@@ -65,17 +67,8 @@ router.put("/book/:idbook", async (req: Request, res: Response) => {
     file,
   } = req.body;
 
-  if (!idbook) {
-    return res.status(400).json("Informe o id");
-  }
-
-  const findBookById = await Book.findByPk(idbook);
-
-  if (!findBookById) {
-    return res.status(400).json("Este livro não existe");
-  }
-
-  const updateBook = await findBookById.update({
+  const updateBook = await updateBookService.execute({
+    idbook,
     id,
     book_name,
     author,
@@ -90,7 +83,7 @@ router.put("/book/:idbook", async (req: Request, res: Response) => {
     file,
   });
 
-  return res.status(200).json(updateBook);
+  return res.json(updateBook);
 });
 
 router.delete("/book/:idbook", async (req: Request, res: Response) => {
