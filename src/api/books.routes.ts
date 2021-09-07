@@ -97,4 +97,16 @@ router.put("/book/:idbook", async (req: Request, res: Response) => {
   return res.status(200).json(updateBook)
 });
 
+router.delete("/book/:idbook", async (req: Request, res: Response) => {
+  const { idbook } = req.params;
+  if (!idbook) {
+    return res.status(400).json("Informe o id");
+  }
+  const deleteBook = await Book.destroy({ where: { id: idbook } })
+  if (!deleteBook) {
+    return res.status(400).json("Não encontrado")
+  }
+  return res.status(200).json(deleteBook)
+})
+
 export { router };
