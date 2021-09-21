@@ -3,11 +3,19 @@ import { configure, getLogger } from "log4js";
 configure({
   appenders: {
     out: { type: "stdout" },
-    app: { type: "file", filename: "app.log" },
+    multi: {
+      type: "multiFile",
+      base: "./src/api/logs/",
+      property: "categoryName",
+      extension: ".log",
+      maxLogSize: 1024,
+      backup: 3,
+      compress: true,
+    },
   },
   categories: {
     default: {
-      appenders: ["app", "out"],
+      appenders: ["out", "multi"],
       level: "debug",
     },
   },
