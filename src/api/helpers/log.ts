@@ -21,6 +21,6 @@ configure({
   },
 });
 
-const logger = getLogger();
+const logger = getLogger("Server");
 
 export { logger };
